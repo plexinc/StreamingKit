@@ -36,7 +36,7 @@
 
 @class STKHTTPDataSource;
 
-typedef void(^STKURLBlock)(NSURL* url);
+typedef void(^STKURLBlock)(NSURL* url, NSDictionary* headers);
 typedef NSURL*(^STKURLProvider)();
 typedef void(^STKAsyncURLProvider)(STKHTTPDataSource* dataSource, BOOL forSeek, STKURLBlock callback);
 

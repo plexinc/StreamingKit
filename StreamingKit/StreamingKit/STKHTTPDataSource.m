@@ -82,7 +82,7 @@
     
     return [self initWithAsyncURLProvider:^(STKHTTPDataSource* dataSource, BOOL forSeek, STKURLBlock block)
     {
-        block(urlProviderIn());
+        block(urlProviderIn(), nil);
     }];
 }
 
@@ -490,7 +490,7 @@
 	requestSerialNumber++;
 	localRequestSerialNumber = requestSerialNumber;
 	
-    asyncUrlProvider(self, forSeek, ^(NSURL* url)
+    asyncUrlProvider(self, forSeek, ^(NSURL* url, NSDictionary *headers)
     {
 		if (localRequestSerialNumber != self->requestSerialNumber)
 		{
@@ -511,6 +511,14 @@
             CFHTTPMessageSetHeaderFieldValue(message, CFSTR("Range"), (__bridge CFStringRef)[NSString stringWithFormat:@"bytes=%lld-", seekStart]);
 
             discontinuous = YES;
+        }
+        
+        // Custom headers
+        
+        if (headers)
+        {
+            for (NSString *name in headers)
+                CFHTTPMessageSetHeaderFieldValue(message, (__bridge CFStringRef)name, (__bridge CFStringRef)headers[name]);
         }
 
         for (NSString* key in self->requestHeaders)
