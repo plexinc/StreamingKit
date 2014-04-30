@@ -102,11 +102,6 @@
     return self;
 }
 
--(void) dealloc
-{
-    NSLog(@"STKHTTPDataSource dealloc");
-}
-
 -(NSURL*) url
 {
     return self->currentUrl;
