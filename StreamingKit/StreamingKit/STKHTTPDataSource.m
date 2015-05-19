@@ -593,11 +593,6 @@
     return self->httpStatusCode;
 }
 
--(NSRunLoop*) eventsRunLoop
-{
-    return self->eventsRunLoop;
-}
-
 -(NSString*) description
 {
     return [NSString stringWithFormat:@"HTTP data source with file length: %lld and position: %lld", self.length, self.position];

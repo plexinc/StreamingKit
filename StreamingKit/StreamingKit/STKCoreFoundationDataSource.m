@@ -194,6 +194,11 @@ static void ReadStreamCallbackProc(CFReadStreamRef stream, CFStreamEventType eve
     return 0;
 }
 
+-(NSRunLoop*) eventsRunLoop
+{
+    return self->eventsRunLoop;
+}
+
 -(void) openCompleted
 {
 }

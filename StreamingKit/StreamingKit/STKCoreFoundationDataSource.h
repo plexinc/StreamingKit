@@ -60,5 +60,6 @@
 -(void) eof;
 -(void) errorOccured;
 -(CFStreamStatus) status;
+-(NSRunLoop*) eventsRunLoop;
 
 @end
