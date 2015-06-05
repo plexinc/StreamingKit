@@ -99,12 +99,14 @@ static void PopulateOptionsWithDefault(STKAudioPlayerOptions* options)
 #define CHECK_STATUS_AND_REPORT(call) \
 	if ((status = (call))) \
 	{ \
+        LOGINFO(([NSString stringWithFormat:@"Error calling %@ (OSStatus %@)", @#call, @(status)])); \
 		[self unexpectedError:STKAudioPlayerErrorAudioSystemError]; \
 	}
 
 #define CHECK_STATUS_AND_RETURN(call) \
 	if ((status = (call))) \
 	{ \
+        LOGINFO(([NSString stringWithFormat:@"Error calling %@ (OSStatus %@)", @#call, @(status)])); \
 		[self unexpectedError:STKAudioPlayerErrorAudioSystemError]; \
 		return;\
 	}
@@ -112,6 +114,7 @@ static void PopulateOptionsWithDefault(STKAudioPlayerOptions* options)
 #define CHECK_STATUS_AND_RETURN_VALUE(call, value) \
 	if ((status = (call))) \
 	{ \
+        LOGINFO(([NSString stringWithFormat:@"Error calling %@ (OSStatus %@)", @#call, @(status)])); \
 		[self unexpectedError:STKAudioPlayerErrorAudioSystemError]; \
 		return value;\
 	}
@@ -1529,6 +1532,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         
         if (error)
         {
+            LOGINFO(([NSString stringWithFormat:@"Error opening audio file stream (AudioFileStreamOpen - OSStatus %@)", @(error)]));
             [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
             
             return;
@@ -1660,6 +1664,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                 
                 if (error)
                 {
+                    LOGINFO(([NSString stringWithFormat:@"Error stopping audio processing graph (AUGraphStop - OSStatus %@)", @(error)]));
                     [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
                     
                     pthread_mutex_unlock(&playerMutex);
@@ -1695,6 +1700,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                 
                 if (error)
                 {
+                    LOGINFO(([NSString stringWithFormat:@"Error starting audio processing graph (AUGraphStart - OSStatus %@)", @(error)]));
                     [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
                     
                     pthread_mutex_unlock(&playerMutex);
@@ -1981,6 +1987,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
         
         if (status)
         {
+            LOGINFO(([NSString stringWithFormat:@"Error creating audio converter (AudioConverterNew - OSStatus %@)", @(status)]));
             [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
             
             return;
@@ -2021,6 +2028,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
         
         if (status)
         {
+            LOGINFO(([NSString stringWithFormat:@"Error setting audio converter property kAudioConverterDecompressionMagicCookie (AudioConverterSetProperty - OSStatus %@)", @(status)]));
             [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
             
             return;
@@ -2380,6 +2388,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
     
     if (status)
     {
+        LOGINFO(([NSString stringWithFormat:@"Error starting audio processing graph (AUGraphStart - OSStatus %@)", @(status)]));
         [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
         
         return NO;
@@ -2408,6 +2417,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
     
     if (status)
     {
+        LOGINFO(([NSString stringWithFormat:@"Error checking if audio processing graph is running (AUGraphIsRunning - OSStatus %@)", @(status)]));
         [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
     }
     else if (!isRunning)
@@ -2422,6 +2432,7 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
 	
     if (status)
     {
+        LOGINFO(([NSString stringWithFormat:@"Error stopping audio processing graph (AUGraphStop - OSStatus %@)", @(status)]));
         [self unexpectedError:STKAudioPlayerErrorAudioSystemError];
     }
     
@@ -2771,7 +2782,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
 
                     if (writeError)
                     {
-                        NSLog(@"STKAudioPlayer:handleRecordingOfAudioPackets failed on AudioFileWritePackets with error \"" OSSTATUS_PRINTF_PLACEHOLDER "\"", OSSTATUS_PRINTF_VALUE(writeError));
+                        LOGINFO(([NSString stringWithFormat:@"STKAudioPlayer:handleRecordingOfAudioPackets failed on AudioFileWritePackets with error \"" OSSTATUS_PRINTF_PLACEHOLDER "\"", OSSTATUS_PRINTF_VALUE(writeError)]));
                     }
                     else
                     {
@@ -2781,7 +2792,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else
             {
-                NSLog(@"STKAudioPlayer: Unexpected error during recording audio file conversion");
+                LOGINFO(@"STKAudioPlayer: Unexpected error during recording audio file conversion");
             }
             
             if (status == 100)
