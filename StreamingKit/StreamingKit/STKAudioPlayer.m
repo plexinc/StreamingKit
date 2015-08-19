@@ -1953,7 +1953,8 @@ static BOOL GetHardwareCodecClassDesc(UInt32 formatId, AudioClassDescription* cl
 
     [self destroyAudioConverter];
     
-    canonicalAudioStreamBasicDescription.mChannelsPerFrame = asbd->mChannelsPerFrame;
+    // FIXME: This breaks mono files.
+    //canonicalAudioStreamBasicDescription.mChannelsPerFrame = asbd->mChannelsPerFrame;
     
     BOOL isRecording = currentlyReadingEntry.dataSource.recordToFileUrl != nil;
     if (isRecording)
