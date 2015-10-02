@@ -997,7 +997,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
     }
     
     OSSpinLockLock(&entry->spinLock);
-    double retval = entry->seekTime + (entry->framesPlayed / canonicalAudioStreamBasicDescription.mSampleRate);
+    double retval = requestedSeekTime + (entry->framesPlayed / canonicalAudioStreamBasicDescription.mSampleRate);
     OSSpinLockUnlock(&entry->spinLock);
 	
     return retval;
