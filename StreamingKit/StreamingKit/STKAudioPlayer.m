@@ -1566,6 +1566,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         {
             if (dataSourceIn == currentlyPlayingEntry.dataSource)
             {
+                LOGINFO(([NSString stringWithFormat:@"Error parsing audio file stream data (AudioFileStreamParseBytes - OSStatus %@)", @(error)]));
                 [self unexpectedError:STKAudioPlayerErrorStreamParseBytesFailed];
             }
             
@@ -2628,6 +2629,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else if (status != 0)
             {
+                LOGINFO(([NSString stringWithFormat:@"Error converting audio data (AudioConverterFillComplexBuffer - OSStatus %@)", @(status)]));
                 [self unexpectedError:STKAudioPlayerErrorCodecError];
                 
                 return;
@@ -2687,6 +2689,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else if (status != 0)
             {
+                LOGINFO(([NSString stringWithFormat:@"Error converting audio data (AudioConverterFillComplexBuffer - OSStatus %@)", @(status)]));
                 [self unexpectedError:STKAudioPlayerErrorCodecError];
                 
                 return;
@@ -2736,6 +2739,7 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
             }
             else if (status != 0)
             {
+                LOGINFO(([NSString stringWithFormat:@"Error converting audio data (AudioConverterFillComplexBuffer - OSStatus %@)", @(status)]));
                 [self unexpectedError:STKAudioPlayerErrorCodecError];
                 
                 return;
