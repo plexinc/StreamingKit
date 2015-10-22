@@ -311,6 +311,8 @@ static void PopulateOptionsWithDefault(STKAutoRecoveringHTTPDataSourceOptions* o
         return;
     }
     
+    [self.autoRecoveringHTTPDataSourceDelegate autoRecoveringHTTPDataSourceWillAttemptReconnect:self];
+
     NSLog(@"attemptReconnect %lld/%lld", self.position, self.length);
     
 	if (self.innerDataSource.eventsRunLoop)

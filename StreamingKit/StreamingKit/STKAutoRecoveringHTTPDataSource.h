@@ -43,10 +43,19 @@ typedef struct
 }
 STKAutoRecoveringHTTPDataSourceOptions;
 
+@protocol STKAutoRecoveringHTTPDataSourceDelegate;
+
 @interface STKAutoRecoveringHTTPDataSource : STKDataSourceWrapper
 
 -(id) initWithHTTPDataSource:(STKHTTPDataSource*)innerDataSource;
 
+@property (weak) id<STKAutoRecoveringHTTPDataSourceDelegate> autoRecoveringHTTPDataSourceDelegate;
 @property (readonly) STKHTTPDataSource* innerDataSource;
+
+@end
+
+@protocol STKAutoRecoveringHTTPDataSourceDelegate <NSObject>
+
+- (void)autoRecoveringHTTPDataSourceWillAttemptReconnect:(STKAutoRecoveringHTTPDataSource *)dataSource;
 
 @end
